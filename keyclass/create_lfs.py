@@ -149,15 +149,19 @@ class CreateLabellingFunctions:
                 u_label = label_names[u]
                 print(u_label, inds_keywords)
 
-        return models.LabelModelWrapper(\
+        label_model = models.LabelModelWrapper(\
             label_matrix=create_label_matrix(\
-            word_indicator_matrix=self.word_indicator_matrix,
-            keywords=self.keywords,
-            assigned_category=self.assigned_category),
+                word_indicator_matrix=self.word_indicator_matrix,
+                keywords=self.keywords,
+                assigned_category=self.assigned_category),
             n_classes=n_classes,
             y_train=y_train,
             device=self.device,
-            model_name=self.label_model_name).train_label_model(\
+            model_name=self.label_model_name)\
+
+        label_model.train_label_model(\
             lr=label_model_lr,
             n_epochs=label_model_n_epochs,
-            cuda=True if torch.cuda.is_available() else False).predict_proba().values
+            cuda=True if torch.cuda.is_available() else False)
+
+        return label_model.predict_proba().values
