@@ -1,49 +1,15 @@
-# coding=utf-8
-# MIT License
-
-# Copyright (c) 2020 Carnegie Mellon University, Auton Lab
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 from curses import raw
+from tqdm import tqdm, trange
+import numpy as np
 import torch
 from typing import List, Dict, Tuple, Iterable, Type, Union, Callable, Optional
-import numpy as np
-from tqdm import tqdm, trange
 import copy
 
 
 def get_q_soft(p: np.ndarray):
-    """Get target distribution for model refinement via self-training. 
-
-    Soft labeling (Xie et al., 2016) derives Q by enhancing high-confidence predictions while
-    demoting low-confidence ones via squaring and normalizing the current predictions.
-
-    Parameters
-    ----------
-    p: Current predictions of the model.
-
-    References
-    ----------
-    Junyuan Xie, Ross B. Girshick, and Ali Farhadi. 2016. Unsupervised deep embedding for clustering analysis. In ICML.
-    """
-    q = np.square(p) / np.sum(p, axis=0, keepdims=True)
+    square = np.square(p)
+    summed = np.sum(p, axis=0, keepdims=True)
+    q = square / summed
     q = q / np.sum(q, axis=1, keepdims=True)
     return q
 
@@ -60,23 +26,7 @@ def train(model: torch.nn.Module,
           lr: float = 1e-3,
           weight_decay: float = 1e-4,
           patience: int = 2):
-    """Function to train the encoder along with fully connected layers. 
 
-    Parameters
-    ----------
-    model: ML/DL Model to train
-    X_train: Training Data Features
-    y_train: Training Data Ground Truth
-    device: Device to use for training. 'cuda' by default
-    sample_weights: Array of weights assigned to individual samples
-    epochs: Number of complete passes of the training data through the model
-    batch_size: Number of samples to feed into the model before updating hyperparameters
-    criterion: Loss function (or Optimizer)
-    raw_text: Boolean Flag describing if raw text is to be processed (True if processing raw text, else False)
-    lr: Learning Rate
-    weight_decay: Weight decay parameter (for regularization/to prevent overfitting) 
-    patience: Number of consecutive epochs of no performance improvement before terminating training (for early stopping)
-    """
     if isinstance(y_train, np.ndarray):
         y_train = torch.from_numpy(y_train)
 
@@ -87,9 +37,7 @@ def train(model: torch.nn.Module,
         sample_weights = torch.from_numpy(sample_weights.reshape(
             -1, 1)).to(device).float()
 
-    optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=lr,
-                                 weight_decay=weight_decay)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)
 
     model = model.train()
@@ -99,9 +47,9 @@ def train(model: torch.nn.Module,
     best_state_dict = None
 
     N = len(X_train)
-    pbar = trange(epochs, unit="batch")
-    for nep in pbar:
-        pbar.set_description(f"Epoch {nep}")
+    progress_bar = trange(epochs, unit="batch")
+    for new_epoch in progress_bar:
+        progress_bar.set_description(f"Epoch {new_epoch}")
         permutation = torch.randperm(N)
         running_loss = 0
 
@@ -133,7 +81,7 @@ def train(model: torch.nn.Module,
         scheduler.step()
 
         with torch.no_grad():  # Early stopping
-            pbar.set_postfix(tolerance_count=tolcount,
+            progress_bar.set_postfix(tolerance_count=tolcount,
                              running_loss=running_loss,
                              best_loss=best_loss)
             if running_loss <= best_loss:
@@ -164,23 +112,7 @@ def self_train(model: torch.nn.Module,
                patience: int = 3,
                self_train_thresh: float = 1 - 2e-3,
                print_eval: bool = True):
-    """Function to self train a model.
 
-    Parameters
-    ----------
-    model: ML/DL model to self train on
-    X_train: Feature vectors for training dataset
-    X_val: Feature vectors for validation
-    y_val: Ground Truths for validation
-    device: Device to use for self training. 'cuda' by default
-    lr: Learning Rate for self training
-    weight_decay: Weight decay parameter (for regularization/to prevent overfitting) for self training
-    batch_size: Number of samples to feed into the model before updating hyperparameters for self training
-    q_update_interval: Number of steps before q is updated for self training
-    patience: Number of consecutive epochs of no performance improvement before terminating training (for early stopping) for self training
-    self_train_thresh: If p matches q at a rate above this threshold for "patience" number of epochs, then self training will stop early (if predictions p are not flipping, stop early)
-    print_eval: Boolean - prints validation metrics if True, and does not if False
-    """
     model.train()
     model.zero_grad()
     model.to(device)
@@ -239,7 +171,6 @@ def self_train(model: torch.nn.Module,
 
         if print_eval == True:
             val_preds = model.predict(X_val)
-            # print('tolcount', tolcount, 'self_train_agreement', self_train_agreement, 'validation_accuracy', np.mean(val_preds==y_val))
 
         pbar.set_postfix(tolerance_count=tolcount,
                          self_train_agreement=self_train_agreement,
