@@ -117,8 +117,8 @@ def fetch_data(dataset='imdb', path='~/', split='train'):
 
     text = open(f'{join(path, dataset, split)}.txt').readlines()
 
-    if dataset == 'mimic':
-        text = [cleantext.clean(line) for line in text]
+    # if dataset == 'mimic':
+    #     text = [cleantext.clean(line) for line in text]
 
     return text
 
