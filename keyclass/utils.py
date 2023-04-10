@@ -9,6 +9,7 @@ from datetime import datetime
 import torch
 from yaml import load, dump
 from yaml import CLoader as Loader, CDumper as Dumper
+import cleantext
 
 
 def log(metrics: Union[List, Dict], filename: str, results_dir: str,
@@ -117,7 +118,7 @@ def fetch_data(dataset='imdb', path='~/', split='train'):
     text = open(f'{join(path, dataset, split)}.txt').readlines()
 
     if dataset == 'mimic':
-        text = [cleantext(line) for line in text]
+        text = [cleantext.clean(line) for line in text]
 
     return text
 
