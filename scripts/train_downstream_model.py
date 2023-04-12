@@ -167,7 +167,8 @@ def train(args_cmd):
 
     if not os.path.exists(args['model_path']): os.makedirs(args['model_path'])
     current_time = datetime.now()
-    model_name = f'end_model_{current_time.strftime("%d-%b-%Y-%H_%M_%S")}.pth'
+    # model_name = f'end_model_{current_time.strftime("%d-%b-%Y-%H_%M_%S")}.pth'
+    model_name = f'end_model.pth'
     print(f'Saving model {model_name}...')
     with open(join(args['model_path'], model_name), 'wb') as f:
         torch.save(model, f)
@@ -242,6 +243,7 @@ def train(args_cmd):
 
     current_time = datetime.now()
     model_name = f'end_model_self_trained_{current_time.strftime("%d %b %Y %H:%M:%S")}.pth'
+    model_name = f'end_model_self_trained.pth'
     print(f'Saving model {model_name}...')
     with open(join(args['model_path'], model_name), 'wb') as f:
         torch.save(model, f)
