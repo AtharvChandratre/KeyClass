@@ -43,7 +43,8 @@ def label_converter(inp):
         for c in line:
             if c=='0' or c=='1':
                 row.append(int(c))
-        return_val.append(row)
+        # return_val.append(row)
+        return_val.append(row[:4])
     return np.array(return_val)
 
 def load_data(args):

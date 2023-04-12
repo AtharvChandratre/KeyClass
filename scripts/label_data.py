@@ -12,16 +12,7 @@ import argparse
 import torch
 import os
 from os.path import join, exists
-
-def label_converter(inp):
-    return_val = []
-    for line in inp:
-        row = []
-        for c in line:
-            if c=='0' or c=='1':
-                row.append(int(c))
-        return_val.append(row)
-    return np.array(return_val)
+import train_downstream_model
 
 def run(args_cmd):
 
@@ -39,7 +30,7 @@ def run(args_cmd):
                   'r') as f:
             y_train = f.readlines()
         # y_train = np.array([int(i.replace('\n', '')) for i in y_train])
-        y_train = label_converter(y_train)
+        y_train = train_downstream_model.label_converter(y_train)
         training_labels_present = True
     else:
         y_train = None
