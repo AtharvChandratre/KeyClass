@@ -36,6 +36,15 @@ import train_classifier
 import pickle
 from datetime import datetime
 
+def label_converter(inp):
+    return_val = []
+    for line in inp:
+        row = []
+        for c in line:
+            if c=='0' or c=='1':
+                row.append(int(c))
+        return_val.append(row)
+    return np.array(return_val)
 
 def load_data(args):
     with open(
@@ -68,7 +77,8 @@ def load_data(args):
                 join(args['data_path'], args['dataset'], f'train_labels.txt'),
                 'r') as f:
             y_train = f.readlines()
-        y_train = np.array([int(i.replace('\n', '')) for i in y_train])
+        # y_train = np.array([int(i.replace('\n', '')) for i in y_train])
+        y_train = label_converter(y_train)
         training_labels_present = True
     else:
         y_train = None
@@ -77,7 +87,8 @@ def load_data(args):
     with open(join(args['data_path'], args['dataset'], f'test_labels.txt'),
               'r') as f:
         y_test = f.readlines()
-    y_test = np.array([int(i.replace('\n', '')) for i in y_test])
+    # y_test = np.array([int(i.replace('\n', '')) for i in y_test])
+    y_test = label_converter(y_test)
 
     # Print data statistics
     print('\n==== Data statistics ====')
