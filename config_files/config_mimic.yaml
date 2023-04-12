@@ -1,11 +1,11 @@
 activation: torch.nn.LeakyReLU()
 average: weighted
 base_encoder: paraphrase-mpnet-base-v2
-criterion: torch.nn.CrossEntropyLoss(reduction='none')
+criterion: torch.nn.BCEWithLogitsLoss(reduction='none')
 data_path: /content/KeyClass/scripts/data/
 dataset: mimic
 device: cuda
-end_model_batch_size: 128
+end_model_batch_size: 8 # Make 128 in Final run
 end_model_epochs: 20
 end_model_lr: 1e-4
 end_model_patience: 3
@@ -14,7 +14,7 @@ h_sizes:
 - 768
 - 256
 - 64
-- 2 #19 in the final model
+- 19
 label_model: data_programming
 label_model_lr: 0.01
 label_model_n_epochs: 100
@@ -22,7 +22,7 @@ max_num: 500
 min_df: 0.001
 model_path: ../models/mimic/
 n_bootstrap: 100
-n_classes: 2 #19 in the final model
+n_classes: 19
 n_jobs: 10
 ngram_range: !!python/tuple
 - 1
@@ -39,23 +39,23 @@ self_train_weight_decay: 1e-4
 show_progress_bar: true
 target_00: infections, parasitic
 target_01: neoplasms
-#target_02: endocrine, nutritional, metabolic
-#target_03: blood, blood-forming organs
-#target_04: mental disorders
-#target_05: nervous system
-#target_06: sense organs
-#target_07: circulatory system
-#target_08: respiratory system
-#target_09: digestive system
-#target_10: genitourinary system
-#target_11: pregnancy, childbirth complications
-#target_12: skin, subcutaneous tissue
-#target_13: musculoskeletal system, connective tissue
-#target_14: congenital anomalies
-#target_15: perinatal period conditions
-#target_16: injury and poisoning
-#target_17: external causes of injury
-#target_18: supplementary
+target_02: endocrine, nutritional, metabolic
+target_03: blood, blood-forming organs
+target_04: mental disorders
+target_05: nervous system
+target_06: sense organs
+target_07: circulatory system
+target_08: respiratory system
+target_09: digestive system
+target_10: genitourinary system
+target_11: pregnancy, childbirth complications
+target_12: skin, subcutaneous tissue
+target_13: musculoskeletal system, connective tissue
+target_14: congenital anomalies
+target_15: perinatal period conditions
+target_16: injury and poisoning
+target_17: external causes of injury
+target_18: supplementary
 topk: 50
 use_custom_encoder: false
 use_noise_aware_loss: true
