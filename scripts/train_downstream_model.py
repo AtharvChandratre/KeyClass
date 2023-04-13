@@ -52,8 +52,7 @@ def load_data(args):
             join(args['preds_path'], f"{args['label_model']}_proba_preds.pkl"),
             'rb') as f:
         proba_preds = pickle.load(f)
-    # y_train_lm = np.argmax(proba_preds, axis=1)
-    y_train_lm = np.array(proba_preds>0.9).astype(bool)
+    y_train_lm = np.argmax(proba_preds, axis=1)
     sample_weights = np.max(proba_preds,
                             axis=1)  # Sample weights for noise aware loss
 
