@@ -47,8 +47,7 @@ def compute_metrics(y_preds: np.array,
     return [
         metrics["accuracy"],
         metrics["precision_weighted"],
-        metrics["recall_weighted"],
-        metrics["f1_weighted"]
+        metrics["recall_weighted"]
     ]
 
 
