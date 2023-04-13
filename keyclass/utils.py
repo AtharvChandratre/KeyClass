@@ -42,7 +42,7 @@ def log(metrics: Union[List, Dict], filename: str, results_dir: str,
 def compute_metrics(y_preds: np.array,
                     y_true: np.array,
                     average: str = 'weighted'):
-    y_preds_labels = np.argmax(y_preds, axis=1)
+    y_preds_labels = np.argmax(y_preds, axis=0)
     return [
         np.mean(y_preds_labels == y_true),
         precision_score(y_true, y_preds_labels, average=average),
