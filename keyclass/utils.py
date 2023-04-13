@@ -4,12 +4,13 @@ import re
 from typing import List, Dict, Tuple, Iterable, Type, Union, Callable, Optional
 import numpy as np
 import joblib
-from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import precision_score, recall_score, precision_recall_fscore_support
 from datetime import datetime
 import torch
 from yaml import load, dump
 from yaml import CLoader as Loader, CDumper as Dumper
 import cleantext
+from pyhealth.metrics import multilabel_metrics_fn
 
 
 def log(metrics: Union[List, Dict], filename: str, results_dir: str,
@@ -42,11 +43,12 @@ def log(metrics: Union[List, Dict], filename: str, results_dir: str,
 def compute_metrics(y_preds: np.array,
                     y_true: np.array,
                     average: str = 'weighted'):
-    y_preds_labels = np.argmax(y_preds, axis=1)
+    metrics = multilabel_metrics_fn(y_preds, y_true, metrics=["accuracy","precision_weighted","recall_weighted","f1_weighted"])
     return [
-        np.mean(y_preds_labels == y_true),
-        precision_score(y_true, y_preds_labels, average=average),
-        recall_score(y_true, y_preds_labels, average=average)
+        metrics["accuracy"],
+        metrics["precision_weighted"],
+        metrics["recall_weighted"],
+        metrics["f1_weighted"]
     ]
 
 
