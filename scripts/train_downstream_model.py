@@ -36,7 +36,7 @@ import train_classifier
 import pickle
 from datetime import datetime
 
-def label_converter(inp):
+def label_converter(args, inp):
     return_val = []
     for line in inp:
         row = []
@@ -44,7 +44,7 @@ def label_converter(inp):
             if c=='0' or c=='1':
                 row.append(int(c))
         # return_val.append(row)
-        return_val.append(row[:4])
+        return_val.append(row[:args['n_len_of_multihot_array']])
     return np.array(return_val)
 
 def load_data(args):
@@ -80,7 +80,7 @@ def load_data(args):
                 'r') as f:
             y_train = f.readlines()
         # y_train = np.array([int(i.replace('\n', '')) for i in y_train])
-        y_train = label_converter(y_train)
+        y_train = label_converter(args, y_train)
         training_labels_present = True
     else:
         y_train = None
@@ -90,7 +90,7 @@ def load_data(args):
               'r') as f:
         y_test = f.readlines()
     # y_test = np.array([int(i.replace('\n', '')) for i in y_test])
-    y_test = label_converter(y_test)
+    y_test = label_converter(args, y_test)
 
     # Print data statistics
     print('\n==== Data statistics ====')
