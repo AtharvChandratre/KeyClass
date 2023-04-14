@@ -14,7 +14,11 @@ echo ${green}===Downloading MIMIC Data...===${reset}
 wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate $URL -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$FILE_ID" -O "mimic.zip" && rm -rf /tmp/cookies.txt
 echo ${green}===Unzipping MIMIC Data...===${reset}
 jar xvf mimic.zip && rm mimic.zip
-mv small-mimic mimic
-cd ../
+#mv small-mimic mimic
 
-python /content/KeyClass/scripts/run_all.py --config /content/KeyClass/config_files/config_mimic.yaml
+cd -- "$BASE_PATH"
+cd KeyClass/scripts/
+CONFIG_LOCATION="${BASE_PATH}KeyClass/config_files/config_mimic.yaml"
+echo $RUN_ALL_SCRIPT_LOCATION
+echo $CONFIG_LOCATION
+python run_all.py --config $CONFIG_LOCATION

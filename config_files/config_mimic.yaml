@@ -42,7 +42,7 @@ target_00: infections, parasitic
 target_01: neoplasms
 target_02: endocrine, nutritional, metabolic
 target_03: blood, blood-forming organs
-#target_04: mental disorders
+#target_04: mental disorders #Comment these out as you increase the number of classes
 #target_05: nervous system
 #target_06: sense organs
 #target_07: circulatory system
