@@ -1,8 +1,5 @@
 
 import sys
-
-import keyclass.utils
-
 sys.path.append('../keyclass/')
 
 import utils
