@@ -27,7 +27,7 @@ import label_data, encode_datasets, train_downstream_model
 if __name__ == "__main__":
     parser_cmd = argparse.ArgumentParser()
     parser_cmd.add_argument('--config',
-                            default='../config_files/config_dbpedia.yml',
+                            default='../config_files/config_mimic.yml',
                             help='Configuration file')
     parser_cmd.add_argument('--random_seed',
                             default=0,
