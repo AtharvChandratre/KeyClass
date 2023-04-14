@@ -29,7 +29,7 @@ def run(args_cmd):
                   'r') as f:
             y_train = f.readlines()
         # y_train = np.array([int(i.replace('\n', '')) for i in y_train])
-        y_train = utils.label_converter(y_train, args['number_of_labels'])
+        y_train = utils.label_converter(y_train, args['n_classes'])
         training_labels_present = True
     else:
         y_train = None
