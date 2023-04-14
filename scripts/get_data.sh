@@ -51,28 +51,28 @@ reset=`tput sgr0`
 #unzip dbpedia.zip && rm dbpedia.zip
 #cd ../
 
-mkdir imdb/
-cd imdb/
-echo ${green}===Downloading IMDB Data...===${reset}
-wget --load-cookies /tmp/cookies.txt "https://drive.google.com/a/illinois.edu/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/a/illinois.edu/uc?export=download&id=1c8X_Ooth2fQleCVz2gCXlOd3-zzE9Mws' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1c8X_Ooth2fQleCVz2gCXlOd3-zzE9Mws" -O imdb.zip && rm -rf /tmp/cookies.txt
-echo ${green}===Unzipping IMDB Data...===${reset}
-unzip imdb.zip && rm imdb.zip
+#mkdir imdb/
+#cd imdb/
+#echo ${green}===Downloading IMDB Data...===${reset}
+#wget --load-cookies /tmp/cookies.txt "https://drive.google.com/a/illinois.edu/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/a/illinois.edu/uc?export=download&id=1c8X_Ooth2fQleCVz2gCXlOd3-zzE9Mws' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1c8X_Ooth2fQleCVz2gCXlOd3-zzE9Mws" -O imdb.zip && rm -rf /tmp/cookies.txt
+#echo ${green}===Unzipping IMDB Data...===${reset}
+#unzip imdb.zip && rm imdb.zip
+#cd ../
+
+# Small MIMIC
+mkdir mimic/
+cd mimic/
+echo ${green}===Downloading Small MIMIC Data...===${reset}
+wget --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/uc?export=download&id=1MtCNwwhq0D9N5TdM2pZliukyOzXz5bbd' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1MtCNwwhq0D9N5TdM2pZliukyOzXz5bbd" -O mimic.zip && rm -rf /tmp/cookies.txt
+echo ${green}===Unzipping Small MIMIC Data...===${reset}
+unzip small-mimic.zip && rm small-mimic.zip
 cd ../
 
-## Small MIMIC
-#mkdir mimic/
-#cd mimic/
-#echo ${green}===Downloading Small MIMIC Data...===${reset}
-#wget "https://drive.google.com/uc?export=download&id=1MtCNwwhq0D9N5TdM2pZliukyOzXz5bbd"
-#echo ${green}===Unzipping Small MIMIC Data...===${reset}
-#unzip small-mimic.zip && rm small-mimic.zip
-#cd ../
-#
-## MIMIC
-#mkdir mimic/
-#cd mimic/
-#echo ${green}===Downloading MIMIC Data...===${reset}
-#wget "https://drive.google.com/uc?export=download&id=1tFnqlu7MvHOrfUM6jK7oPQ7-3oSQr2Z_"
-#echo ${green}===Unzipping MIMIC Data...===${reset}
-#unzip mimic.zip && rm mimic.zip
-#cd ../
+# MIMIC
+mkdir mimic/
+cd mimic/
+echo ${green}===Downloading MIMIC Data...===${reset}
+wget --load-cookies /tmp/cookies.txt "https://drive.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://drive.google.com/uc?export=download&id=1tFnqlu7MvHOrfUM6jK7oPQ7-3oSQr2Z_' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1tFnqlu7MvHOrfUM6jK7oPQ7-3oSQr2Z_" -O mimic.zip && rm -rf /tmp/cookies.txt
+echo ${green}===Unzipping MIMIC Data...===${reset}
+unzip mimic.zip && rm mimic.zip
+cd ../
