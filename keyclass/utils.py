@@ -12,16 +12,6 @@ from yaml import CLoader as Loader, CDumper as Dumper
 import cleantext
 from pyhealth.metrics import multilabel_metrics_fn
 
-def label_converter(inp, num_classes):
-    return_val = []
-    for line in inp:
-        row = []
-        for c in line:
-            if c=='0' or c=='1':
-                row.append(int(c))
-        # return_val.append(row)
-        return_val.append(row[:num_classes])
-    return np.array(return_val)
 
 def log(metrics: Union[List, Dict], filename: str, results_dir: str,
         split: str):
