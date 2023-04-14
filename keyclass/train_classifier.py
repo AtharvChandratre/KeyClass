@@ -142,10 +142,11 @@ def self_train(model: torch.nn.Module,
                                              raw_text=True)
             target_dist = get_q_soft(
                 pred_proba)  # should be of size (N, num_categories)
-            target_preds = np.argmax(target_dist, axis=1)
+            # target_preds = np.argmax(target_dist, axis=1)
+            target_preds = (target_dist>0.9).astype(int)
 
-            self_train_agreement = np.mean(
-                np.argmax(pred_proba, axis=1) == target_preds)
+            self_train_agreement = np.mean((pred_proba>0.9).astype(int)
+                 == target_preds)
 
             if self_train_agreement > self_train_thresh: tolcount += 1
             else: tolcount = 0
