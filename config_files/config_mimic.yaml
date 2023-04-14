@@ -59,3 +59,4 @@ target_03: blood, blood-forming organs
 topk: 50
 use_custom_encoder: false
 use_noise_aware_loss: true
+number_of_labels: 4

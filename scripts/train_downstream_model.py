@@ -67,7 +67,7 @@ def load_data(args):
                 'r') as f:
             y_train = f.readlines()
         # y_train = np.array([int(i.replace('\n', '')) for i in y_train])
-        y_train = utils.label_converter(y_train, args['n_classes'])
+        y_train = utils.label_converter(y_train, args['number_of_labels'])
         training_labels_present = True
     else:
         y_train = None
@@ -77,7 +77,7 @@ def load_data(args):
               'r') as f:
         y_test = f.readlines()
     # y_test = np.array([int(i.replace('\n', '')) for i in y_test])
-    y_test = utils.label_converter(y_train, args['n_classes'])
+    y_test = utils.label_converter(y_train, args['number_of_labels'])
 
     # Print data statistics
     print('\n==== Data statistics ====')
