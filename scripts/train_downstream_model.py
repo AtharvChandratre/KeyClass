@@ -22,9 +22,6 @@
 # SOFTWARE.
 
 import sys
-
-from keyclass.utils import label_converter
-
 sys.path.append('../keyclass/')
 
 import numpy as np
@@ -70,7 +67,7 @@ def load_data(args):
                 'r') as f:
             y_train = f.readlines()
         # y_train = np.array([int(i.replace('\n', '')) for i in y_train])
-        y_train = label_converter(y_train, args['n_classes'])
+        y_train = utils.label_converter(y_train, args['n_classes'])
         training_labels_present = True
     else:
         y_train = None
@@ -80,7 +77,7 @@ def load_data(args):
               'r') as f:
         y_test = f.readlines()
     # y_test = np.array([int(i.replace('\n', '')) for i in y_test])
-    y_test = label_converter(y_train, args['n_classes'])
+    y_test = utils.label_converter(y_train, args['n_classes'])
 
     # Print data statistics
     print('\n==== Data statistics ====')
