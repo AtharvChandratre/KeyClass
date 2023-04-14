@@ -23,7 +23,7 @@ min_df: 0.001
 model_path: ../models/mimic/
 n_bootstrap: 100
 n_classes: 4 # Change to 19 in final run
-n_len_of_multihot_array: 4
+n_len_of_multihot_array: 4 #Modify to change length of 2d array, make 19 in final run
 n_jobs: 10
 ngram_range: !!python/tuple
 - 1
