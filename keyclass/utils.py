@@ -1,3 +1,26 @@
+# coding=utf-8
+# MIT License
+
+# Copyright (c) 2020 Carnegie Mellon University, Auton Lab
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 import json
 from os.path import join, exists
 import re
@@ -15,6 +38,19 @@ from pyhealth.metrics import multilabel_metrics_fn
 
 def log(metrics: Union[List, Dict], filename: str, results_dir: str,
         split: str):
+    """Logging function
+
+        Parameters
+        ----------
+        metrics: Union[List, Dict]
+            The metrics to log and save in a file
+        filename: str
+            Name of the file
+        results_dir: str
+            Path to results directory
+        split: str
+            Train/test split
+    """
     if isinstance(metrics, list):
         assert len(metrics) == 3, "Metrics must be of length 3!"
         results = dict()
@@ -56,6 +92,27 @@ def compute_metrics_bootstrap(y_preds: np.array,
                               average: str = 'weighted',
                               n_bootstrap: int = 100,
                               n_jobs: int = 10):
+    """Compute bootstrapped confidence intervals (CIs) around metrics of interest.
+
+        Parameters
+        ----------
+        y_preds: np.array
+            Predictions
+
+        y_true: np.array
+            Ground truth labels
+
+        average: str
+            This parameter is required for multiclass/multilabel targets. If None,
+            the scores for each class are returned. Otherwise, this determines the
+            type of averaging performed on the data.
+
+        n_bootstrap: int
+            Number of boostrap samples to compute CI.
+
+        n_jobs: int
+            Number of jobs to run in parallel.
+    """
     output_ =  joblib.Parallel(n_jobs=n_jobs, verbose=1)(
                                 joblib.delayed(compute_metrics)
                                     (y_preds[boostrap_inds], y_true[boostrap_inds]) \
@@ -70,6 +127,15 @@ def compute_metrics_bootstrap(y_preds: np.array,
 def get_balanced_data_mask(proba_preds: np.array,
                            max_num: int = 7000,
                            class_balance: Optional[np.array] = None):
+    """Utility function to keep only the most confident predictions, while maintaining class balance
+
+        Parameters
+        ----------
+        proba_preds: Probabilistic labels of data points
+        max_num: Maximum number of data points per class
+        class_balance: Prevalence of each class
+
+    """
     if class_balance is None:  # Assume all classes are equally likely
         class_balance = np.ones(proba_preds.shape[1]) / proba_preds.shape[1]
 
@@ -98,6 +164,8 @@ def get_balanced_data_mask(proba_preds: np.array,
 
 
 def clean_text(sentences: Union[str, List[str]]):
+    """Utility function to clean sentences
+    """
     if isinstance(sentences, str):
         sentences = [sentences]
 
@@ -112,6 +180,24 @@ def clean_text(sentences: Union[str, List[str]]):
 
 
 def fetch_data(dataset='imdb', path='~/', split='train'):
+    """Fetches a dataset by its name
+
+	    Parameters
+	    ----------
+	    dataset: str
+	        List of text to be encoded.
+
+	    path: str
+	        Path to the stored data.
+
+	    split: str
+	        Whether to fetch the train or test dataset. Options are one of 'train' or 'test'.
+    """
+    #_dataset_names = ['agnews', 'amazon', 'dbpedia', 'imdb', 'mimic']
+    #if dataset not in _dataset_names:
+    #    raise ValueError(f'Dataset must be one of {_dataset_names}, but received {dataset}.')
+    #if split not in ['train', 'test']:
+    #    raise ValueError(f'split must be one of \'train\' or \'test\', but received {split}.')
 
     if not exists(f"{join(path, dataset, split)}.txt"):
         raise ValueError(
@@ -136,6 +222,14 @@ def mean_pooling(model_output, attention_mask):
 
 
 def _text_length(text: Union[List[int], List[List[int]]]):
+    """
+    Help function to get the length for the input text. Text can be either
+    a list of ints (which means a single text as input), or a tuple of list of ints
+    (representing several text inputs to the model).
+
+    Adapted from https://github.com/UKPLab/sentence-transformers/blob/40af04ed70e16408f466faaa5243bee6f476b96e/sentence_transformers/SentenceTransformer.py#L548
+    """
+
     if isinstance(text, dict):  #{key: value} case
         return len(next(iter(text.values())))
     elif not hasattr(text, '__len__'):  #Object has no len() method
@@ -154,6 +248,8 @@ class Parser:
             self,
             config_file_path='../config_files/default_config.yml',
             default_config_file_path='../config_files/default_config.yml'):
+        """Class to read and parse the config.yml file
+		"""
         self.config_file_path = config_file_path
         with open(default_config_file_path, 'rb') as f:
             self.default_config = load(f, Loader=Loader)
