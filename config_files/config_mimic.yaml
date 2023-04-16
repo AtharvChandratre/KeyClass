@@ -5,13 +5,15 @@ criterion: torch.nn.BCEWithLogitsLoss(reduction='none')
 data_path: /content/KeyClass/scripts/data/ # Change it to base path/KeyClas/....
 dataset: mimic
 device: cuda
-end_model_batch_size: 32 # Make 128 in Final run
+end_model_batch_size: 128 # Make 128 in Final run
 end_model_epochs: 20
 end_model_lr: 1e-4
 end_model_patience: 3
 end_model_weight_decay: 1e-4
 h_sizes:
 - 768
+- 256
+- 64
 - 10 # Change to 19 in final run
 label_model: data_programming
 label_model_lr: 0.01
