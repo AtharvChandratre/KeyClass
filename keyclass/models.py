@@ -328,7 +328,8 @@ class FeedForwardFlexible(torch.nn.Module):
                                    batch_size=batch_size,
                                    raw_text=raw_text)
         # preds = np.argmax(preds, axis=1)
-        return (preds > 0.9).to(torch.int32)
+        preds_new = preds>0.9
+        return np.asarray(preds_new, dtype=np.int32)
 
     def predict_proba(self, x_test, batch_size=128, raw_text=True):
         with torch.no_grad():
