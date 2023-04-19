@@ -7,7 +7,7 @@ cd KeyClass/scripts/
 
 mkdir data/
 cd data/
-FILE_ID="1tFnqlu7MvHOrfUM6jK7oPQ7-3oSQr2Z_"
+FILE_ID="1Sz-EyVyU-wjfKMYsR58Ch8yOI1WXjqop"
 #FILE_ID="1MtCNwwhq0D9N5TdM2pZliukyOzXz5bbd"
 URL="https://docs.google.com/uc?export=download&id=$FILE_ID"
 echo ${green}===Downloading MIMIC Data...===${reset}
