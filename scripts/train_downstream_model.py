@@ -44,7 +44,7 @@ def label_converter(args, inp):
             if c=='0' or c=='1':
                 row.append(int(c))
         # return_val.append(row)
-        return_val.append(row[:args['n_len_of_multihot_array']])
+        return_val.append(row[:args['n_classes']])
     return np.array(return_val)
 
 def load_data(args):

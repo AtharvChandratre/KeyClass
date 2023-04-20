@@ -12,7 +12,7 @@ end_model_patience: 3
 end_model_weight_decay: 1e-4
 h_sizes:
 - 768
-- 8 # Change to 19 in final run
+- 19 # Change to 19 in final run
 label_model: data_programming
 label_model_lr: 0.01
 label_model_n_epochs: 100
@@ -20,8 +20,7 @@ max_num: 500
 min_df: 0.001
 model_path: ../models/mimic/
 n_bootstrap: 100
-n_classes: 8 # Change to 19 in final run
-n_len_of_multihot_array: 8 #Modify to change length of 2d array, make 19 in final run
+n_classes: 19 # Change to 19 in final run
 n_jobs: 10
 ngram_range: !!python/tuple
 - 1
@@ -44,17 +43,17 @@ target_04: mental disorders #Comment these out as you increase the number of cla
 target_05: nervous system
 target_06: sense organs
 target_07: circulatory system
-#target_08: respiratory system
-#target_09: digestive system
-#target_10: genitourinary system
-#target_11: pregnancy, childbirth complications
-#target_12: skin, subcutaneous tissue
-#target_13: musculoskeletal system, connective tissue
-#target_14: congenital anomalies
-#target_15: perinatal period conditions
-#target_16: injury and poisoning
-#target_17: external causes of injury
-#target_18: supplementary
+target_08: respiratory system
+target_09: digestive system
+target_10: genitourinary system
+target_11: pregnancy, childbirth complications
+target_12: skin, subcutaneous tissue
+target_13: musculoskeletal system, connective tissue
+target_14: congenital anomalies
+target_15: perinatal period conditions
+target_16: injury and poisoning
+target_17: external causes of injury
+target_18: supplementary
 topk: 50
 use_custom_encoder: false
 use_noise_aware_loss: true
